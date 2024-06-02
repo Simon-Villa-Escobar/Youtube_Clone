@@ -22,17 +22,23 @@ class VideoController extends Controller
      */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@']
+                    ]
+                ]
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
                 ],
-            ]
-        );
+            ],
+        ];
     }
 
     /**
@@ -67,10 +73,10 @@ class VideoController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($video_id)
+    public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($video_id),
+            'model' => $this->findModel($id),
         ]);
     }
 
@@ -191,9 +197,9 @@ class VideoController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($video_id)
+    public function actionDelete($id)
     {
-        $this->findModel($video_id)->delete();
+        $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
@@ -205,9 +211,9 @@ class VideoController extends Controller
      * @return Video the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($video_id)
+    protected function findModel($id)
     {
-        if (($model = Video::findOne(['video_id' => $video_id])) !== null) {
+        if (($model = Video::findOne(['video_id' => $id])) !== null) {
             return $model;
         }
 
