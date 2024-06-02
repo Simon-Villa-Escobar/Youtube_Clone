@@ -1,0 +1,17 @@
+RewriteEngine on
+
+# Si un archivo o directorio existe, úsalo directamente
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redirige todo lo demás a index.php
+RewriteRule . index.php
+
+# Opcionalmente, puedes agregar seguridad adicional
+# Bloquear acceso a archivos sensibles
+<Files "index.php">
+    Allow from all
+</Files>
+<FilesMatch "\.(htaccess|htpasswd|yii|config)$">
+    deny from all
+</FilesMatch>
