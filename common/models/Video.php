@@ -210,4 +210,12 @@ class Video extends \yii\db\ActiveRecord
         }
 
     }
+
+    public function isLikedBy($userId)
+    {
+        return VideoLike::find()
+        ->userIdVideoId($userId, $this->video_id)
+        ->liked()
+        ->one();
+    }
 }

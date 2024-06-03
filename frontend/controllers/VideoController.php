@@ -4,13 +4,40 @@ namespace frontend\controllers;
 
 use common\models\Video;
 use common\models\VideoView;
+use common\models\VideoLike;
+use common\models\User;
 use Yii;
 use yii\web\Controller;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 
 class VideoController extends Controller
 {
+
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class'=> AccessControl::class,
+                'only' => ['like', 'dislike'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@']
+                    ]
+                ]
+                    ],
+            'verb' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'like' => ['post'],
+                    'dislike'=> ['post'],
+                ]
+            ]
+        ];
+    }
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
@@ -27,10 +54,7 @@ class VideoController extends Controller
     public function actionView($id)
     {
         $this->layout = 'auth';
-        $video = Video::findOne($id);
-        if (!$video){
-            throw new NotFoundHttpException('Video not found');
-        }
+        $video = $this->findVideo($id);
 
         $videoView = new VideoView();
         $videoView->video_id = $id;
@@ -42,6 +66,47 @@ class VideoController extends Controller
         return $this->render('view', [
             'model' => $video
         ]);
+    }
+
+    public function actionLike($id)
+    {
+        $video = $this->findVideo($id);
+        $userId = Yii::$app->user->id;
+
+        $videoLikeDislike = VideoLike::find()
+            ->userIdVideoId($userId, $id)
+            ->one();
+        if (!$videoLikeDislike) {
+            $this->saveLikeDislike($id, $userId, VideoLike::TYPE_LIKE);
+        } else if ($videoLikeDislike->type == VideoLike::TYPE_LIKE) {
+            $videoLikeDislike->delete();
+        } else {
+            $videoLikeDislike->delete();
+            $this->saveLikeDislike($id, $userId, VideoLike::TYPE_LIKE);
+        }
+
+        return $this->renderAjax('_buttons', [
+            'model' => $video
+        ]);
+    }
+
+    protected function findVideo($id)
+    {
+        $video = Video::findOne($id);
+        if (!$video){
+            throw new NotFoundHttpException('Video not found');
+        }
+        return $video;
+    }
+
+    protected function saveLikeDislike($videoId, $userId, $type)
+    {
+        $videoLikeDislike = new VideoLike();
+        $videoLikeDislike->video_id = $videoId;
+        $videoLikeDislike->user_id = $userId;
+        $videoLikeDislike->type = VideoLike::TYPE_LIKE;
+        $videoLikeDislike->created_at = time();
+        $videoLikeDislike->save();
     }
     
 }
