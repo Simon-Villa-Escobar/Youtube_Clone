@@ -49,9 +49,9 @@ TagsInputAsset::register($this);
 
         <div class="embed-responsive embed-responsive-16by9 mb-3">
             <video class="embed-responsive-item" 
-            poster = "<?php echo $model->getThumbnailLink() ?>"
-            src="<?php echo $model->getVideoLink() ?>" controls>
-        </v>
+                poster = "<?php echo $model->getThumbnailLink() ?>"
+                src="<?php echo $model->getVideoLink() ?>" controls>
+            </v>
         </div>
             
             <div class="mb-3">

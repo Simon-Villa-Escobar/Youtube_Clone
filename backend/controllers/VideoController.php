@@ -49,17 +49,9 @@ class VideoController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Video::find(),
-            /*
-            'pagination' => [
-                'pageSize' => 50
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'video_id' => SORT_DESC,
-                ]
-            ],
-            */
+            'query' => Video::find()
+                ->creator(Yii::$app->user->id)
+                ->latest(),
         ]);
 
         return $this->render('index', [

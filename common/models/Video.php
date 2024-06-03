@@ -10,6 +10,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\helpers\FileHelper;
 use yii\imagine\Image;
 
+
 /**
  * This is the model class for table "{{%video}}".
  *
@@ -85,7 +86,7 @@ class Video extends \yii\db\ActiveRecord
             ['status', 'default', 'value'=>self::STATUS_UNLISTED], 
             ['thumbnail', 'image', 'minWidth' => 1280],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
-        [['video'], 'file', 'extensions' => ['mp4']/*, 'checkExtensionByMimeType' => false*/],
+            [['video'], 'file', 'extensions' => ['mp4']/*, 'checkExtensionByMimeType' => false*/],
         ];
     }
 
@@ -120,7 +121,7 @@ class Video extends \yii\db\ActiveRecord
     /**
      * Gets query for [[CreatedBy]].
      *
-     * @return \yii\db\ActiveQuery|\common\models\query\VideoQuery
+     * @return \yii\db\ActiveQuery|\common\models\query\UserQuery
      */
     public function getCreatedBy()
     {
@@ -183,5 +184,21 @@ class Video extends \yii\db\ActiveRecord
         return $this->has_thumbnail ?
         Yii::$app->params['frontendUrl'].'/storage/thumbs/'.$this->video_id.'.jpg'
         : '';
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        $videoPath = Yii::getAlias('@frontend/web/storage/videos/' . $this->video_id . '.mp4');
+        if (file_exists($videoPath)) {
+            unlink($videoPath); 
+        }
+
+
+        $thumbnailPath = Yii::getAlias('@frontend/web/storage/thumbs/' . $this->video_id . '.jpg');
+        if (file_exists($thumbnailPath)) {
+            unlink($thumbnailPath);
+        }
+
     }
 }
