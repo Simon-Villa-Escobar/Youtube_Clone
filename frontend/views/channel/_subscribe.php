@@ -10,4 +10,4 @@ use yii\helpers\Url;
     data-method="post" data-pjax="1">
     Subscribe <i class="far fa-bell"></i>
 
-</a>9
+</a> <?php echo $channel->getSubscribers()->count() ?>

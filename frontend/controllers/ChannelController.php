@@ -50,8 +50,15 @@ class ChannelController extends Controller
     {
         $channel = $this->findChannel($username);
 
+        $dataProvider = new ActiveDataProvider([
+            'query' => Video::find()
+            ->creator($channel->id)
+            ->published()
+        ]);
+
         return $this->render('view', [
             'channel' => $channel,
+            'dataProvider' => $dataProvider
         ]);
     }
 

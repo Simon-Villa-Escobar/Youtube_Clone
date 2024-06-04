@@ -5,7 +5,10 @@
  * Time: 8:48 AM
  */
 
+
 use yii\helpers\Html;
+
+
 use yii\helpers\Url;
 
 /** @var $this \yii\web\View */
@@ -39,9 +42,7 @@ $this->title = $model->title . ' | ' . Yii::$app->name;
         </div>
         <div>
             <p>
-                <?php echo Html::a($model->createdBy->username, [
-                    '/channel/view', 'username' => $model->createdBy->username
-                    ]) ?>
+                <?php echo \common\helpers\Html::channelLink($model->createdBy) ?>
             </p>
             <?php echo Html::encode($model->description) ?>
             
