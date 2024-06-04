@@ -89,6 +89,29 @@ class VideoController extends Controller
             'model' => $video
         ]);
     }
+    
+    public function actionDislike($id)
+    {
+        $video = $this->findVideo($id);
+        $userId = Yii::$app->user->id;
+
+        $videoLikeDislike = VideoLike::find()
+            ->userIdVideoId($userId, $id)
+            ->one();
+        if (!$videoLikeDislike) {
+            $this->saveLikeDislike($id, $userId, VideoLike::TYPE_DISLIKE);
+        } else if ($videoLikeDislike->type == VideoLike::TYPE_DISLIKE) {
+            $videoLikeDislike->delete();
+        } else {
+            $videoLikeDislike->delete();
+            $this->saveLikeDislike($id, $userId, VideoLike::TYPE_DISLIKE);
+        }
+
+        return $this->renderAjax('_buttons', [
+            'model' => $video
+        ]);
+    }
+
 
     protected function findVideo($id)
     {
@@ -104,7 +127,7 @@ class VideoController extends Controller
         $videoLikeDislike = new VideoLike();
         $videoLikeDislike->video_id = $videoId;
         $videoLikeDislike->user_id = $userId;
-        $videoLikeDislike->type = VideoLike::TYPE_LIKE;
+        $videoLikeDislike->type = $type;
         $videoLikeDislike->created_at = time();
         $videoLikeDislike->save();
     }

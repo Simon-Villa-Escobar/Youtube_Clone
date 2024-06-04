@@ -86,13 +86,20 @@ class VideoLike extends \yii\db\ActiveRecord
     }
 
     public static function isLikedBy($userId, $videoId)
-{
-    return self::find()
-        ->where(['user_id' => $userId, 'video_id' => $videoId])
-        ->liked()
-        ->one();
-}
-
+    {
+        return self::find()
+            ->where(['user_id' => $userId, 'video_id' => $videoId])
+            ->liked()
+            ->one();
+    }
+    
+    public static function isDislikedBy($userId, $videoId)
+    {
+        return self::find()
+            ->where(['user_id' => $userId, 'video_id' => $videoId])
+            ->disliked()
+            ->one();
+    }
 
     
 }
