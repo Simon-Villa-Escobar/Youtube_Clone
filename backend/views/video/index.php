@@ -32,20 +32,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $this->render('_video_item', ['model' => $model]);
                 }
             ],
-            // 'title',
-            // 'description:ntext',
-            // 'tags',
+
             [
                 'attribute' => 'status',
                 'content' => function ($model) {
                     return $model->getStatusLabels()[$model->status];
                 }
             ],
-            //'has_thumbnail',
-            //'video_name',
+
             'created_at:datetime',
             'updated_at:datetime',
-            //'created_by',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Video $model, $key, $index, $column) {

@@ -59,18 +59,6 @@ class VideoController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Video model.
-     * @param string $video_id Video ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
 
     /**
      * Creates a new Video model.
@@ -97,54 +85,6 @@ class VideoController extends Controller
              'model' => $model,
          ]);
      }
-     
-
-// public function actionCreate()
-//     {
-//         $model = new Video();
-
-//         if (Yii::$app->request->isPost) {
-//             $model->video = UploadedFile::getInstance($model,'video');
-//             if ($model->upload()) {
-//                 echo "bien";
-//                 return;
-//             }
-//         }
-//     } 
-
-
-
-
-
-
-
-//     public function actionCreate()
-// {
-//     $model = new Video();
-
-//     if (Yii::$app->request->isPost) {
-//         $model->load(Yii::$app->request->post());
-//         $model->video = UploadedFile::getInstance($model, 'video');
-
-//         // Verificar si los datos del modelo son válidos
-//         if ($model->validate()) {
-//             // Los datos son válidos, ahora intenta guardar el modelo
-//             if ($model->save()) {
-//                 // El modelo se ha guardado correctamente
-//                 return $this->redirect(['update', 'id' => $model->video_id]);
-//             }
-//         } else {
-//             // Hay errores de validación, puedes mostrarlos si lo deseas
-//             $errors = $model->errors;
-//             // Por ejemplo, puedes imprimir los errores en la vista
-//             print_r($errors);
-//         }
-//     }
-
-//     return $this->render('create', [
-//         'model' => $model,
-//     ]);
-// }
 
     /**
      * Updates an existing Video model.
@@ -153,20 +93,7 @@ class VideoController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    // public function actionUpdate($video_id)
-    // {
-    //     $model = $this->findModel($video_id);
-
-    //     if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-    //         return $this->redirect(['update', 'id' => $model->video_id]);
-    //     }
-
-    //     return $this->render('update', [
-    //         'model' => $model,
-    //     ]);
-    // }
-
-
+    
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);

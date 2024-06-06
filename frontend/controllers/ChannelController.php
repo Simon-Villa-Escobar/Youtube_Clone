@@ -1,10 +1,6 @@
 <?php
 
 
-
-
-
-
 namespace frontend\controllers;
 
 use common\models\Subscriber;
@@ -18,13 +14,6 @@ use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
-
-
-
-
-
-
-
 
 class ChannelController extends Controller
 {

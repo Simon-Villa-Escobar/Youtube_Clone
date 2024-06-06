@@ -1,6 +1,3 @@
-
-
-
 <aside class="shadow">
     <?php echo \yii\bootstrap4\Nav::widget([
     'options' => [
@@ -14,10 +11,6 @@
         [
             'label' => 'Videos',
             'url' => ['/video/index']
-        ],
-        [
-            'label' => 'Comments',
-            'url' => ['/comment/index']
         ]
     ]
 ]) ?>
